@@ -8,5 +8,3 @@ Maintainer: Christian Zang <christian.zang@wzw.tum.de>
 Description: Calculation of monthly (sc)PDSI series
 License: GPL-3
 LazyLoad: yes
-Collate:
-    'pdsi.R'
