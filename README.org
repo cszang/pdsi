@@ -1,0 +1,18 @@
+* pdsi
+  Calculation of (sc)PDSI from monthly temperature and precipition
+  data in R. This is basically a wrapper around the University of
+  Nebraska's C++ based PDSI implementation from
+  http://greenleaf.unl.edu/downloads/. This code has an unknown
+  license, I treat it as MIT.
+
+** Installation
+
+#+begin_src R
+install.packages("devtools")
+library(devtools)
+install_github("pdsi", "znag")
+#+end_src
+
+** Todo
+   - Add support for Linux
+   - Reliably remove temporary directories on Windows machines.
