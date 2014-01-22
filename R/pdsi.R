@@ -100,7 +100,7 @@ pdsi <- function(awc, lat, climate, start, end) {
   pdsi_path <- file.path(tempdir, "monthly", "original", "PDSI.tbl")
   scPDSI <- read.table(scpdsi_path)
   PDSI <- read.table(pdsi_path)
-  file.remove(tempdir, recursive = TRUE)
+  unlink(tempdir, recursive = TRUE)
 
   colnames(PDSI) <- c("YEAR", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL",
                       "AUG", "SEP", "OCT", "NOV", "DEC")
