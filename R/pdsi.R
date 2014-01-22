@@ -42,9 +42,8 @@ pdsi <- function(awc, lat, climate, start, end) {
   the_system <- Sys.info()["sysname"]
 
   ## create temp dir
-  require(digest)
-  tempdir <- paste(getwd(), "/", digest(Sys.time()), sep = "")
-  dir.create(tempdir)
+  tdir <- tempdir()
+  dir.create(tdir)
 
   require(bootRes)
 
@@ -59,16 +58,16 @@ pdsi <- function(awc, lat, climate, start, end) {
   pmat_prec <- climate_reform[,13:24]
   
   ## write to files
-  temp_path <- file.path(tempdir, "monthly_T")
-  prec_path <- file.path(tempdir, "monthly_P")
+  temp_path <- file.path(tdir, "monthly_T")
+  prec_path <- file.path(tdir, "monthly_P")
   write.table(pmat_temp, temp_path, col.names = F, quote = F)
   write.table(pmat_prec, prec_path, col.names = F, quote = F)
   
   ## calculate mean values and write to files
   normal_temp <- round(t(as.vector(colMeans(pmat_temp))), 3)
   normal_prec <- round(t(as.vector(colMeans(pmat_prec))), 3)
-  normal_temp_path <- file.path(tempdir, "mon_T_normal")
-  normal_prec_path <- file.path(tempdir, "mon_P_normal")
+  normal_temp_path <- file.path(tdir, "mon_T_normal")
+  normal_prec_path <- file.path(tdir, "mon_P_normal")
   write.table(normal_temp, normal_temp_path, col.names = F, quote = F,
               row.names = F)
   write.table(normal_prec, normal_prec_path, col.names = F, quote = F,
@@ -76,7 +75,7 @@ pdsi <- function(awc, lat, climate, start, end) {
   
   ## write parameter files to tempdir
   params <- t(c(awc, lat))
-  param_path <- file.path(tempdir, "parameter")
+  param_path <- file.path(tdir, "parameter")
   write.table(params, param_path, col.names = F, quote = F,
               row.names = F)
 
@@ -88,19 +87,19 @@ pdsi <- function(awc, lat, climate, start, end) {
   }
 
   oldwd <- getwd()
-  setwd(tempdir)
+  setwd(tdir)
   
-  cmd <- paste(exec_path, "-m -i", shQuote(tempdir), start, end)
+  cmd <- paste(exec_path, "-m -i", shQuote(tdir), start, end)
   system(cmd)
 
   setwd(oldwd)
 
   ## read (sc)PDSI in again and return it
-  scpdsi_path <- file.path(tempdir, "monthly", "self_cal", "PDSI.tbl")
-  pdsi_path <- file.path(tempdir, "monthly", "original", "PDSI.tbl")
+  scpdsi_path <- file.path(tdir, "monthly", "self_cal", "PDSI.tbl")
+  pdsi_path <- file.path(tdir, "monthly", "original", "PDSI.tbl")
   scPDSI <- read.table(scpdsi_path)
   PDSI <- read.table(pdsi_path)
-  unlink(tempdir, recursive = TRUE)
+  unlink(tdir, recursive = TRUE)
 
   colnames(PDSI) <- c("YEAR", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL",
                       "AUG", "SEP", "OCT", "NOV", "DEC")
