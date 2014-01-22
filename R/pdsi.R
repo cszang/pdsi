@@ -97,8 +97,8 @@ pdsi <- function(awc, lat, climate, start, end) {
   system(cmd)
 
   ## read (sc)PDSI in again and return it
-  scpdsi_path <- file.path(tdir, "monthly", "self_cal", "PDSI.tbl")
-  pdsi_path <- file.path(tdir, "monthly", "original", "PDSI.tbl")
+  scpdsi_path <- file.path(odir, "monthly", "self_cal", "PDSI.tbl")
+  pdsi_path <- file.path(odir, "monthly", "original", "PDSI.tbl")
   scPDSI <- read.table(scpdsi_path)
   PDSI <- read.table(pdsi_path)
   unlink(tdir, recursive = TRUE)
