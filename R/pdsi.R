@@ -46,12 +46,8 @@ pdsi <- function(awc, lat, climate, start, end) {
   tempdir <- paste(getwd(), "/", digest(Sys.time()), sep = "")
   dir.create(tempdir)
 
-  require(bootRes)                      # TODO put this into @imports
+  require(bootRes)
 
-  ## convert to fahrenheit and inch
-  climate[,3] <- round(climate[,3]*1.8 + 32, 3)
-  climate[,4] <- round(climate[,4]/25.4, 3)
-  
   ## truncate and reformat climate data
   climate_start <- which(climate[,1] == start-1)[1]
   climate_end <- which(climate[,1] == end)[12]
@@ -94,7 +90,7 @@ pdsi <- function(awc, lat, climate, start, end) {
   oldwd <- getwd()
   setwd(tempdir)
   
-  cmd <- paste(exec_path, "-i", shQuote(tempdir), start, end)
+  cmd <- paste(exec_path, "-m -i", shQuote(tempdir), start, end)
   system(cmd)
 
   setwd(oldwd)
@@ -105,7 +101,7 @@ pdsi <- function(awc, lat, climate, start, end) {
   scPDSI <- read.table(scpdsi_path)
   PDSI <- read.table(pdsi_path)
   file.remove(tempdir, recursive = TRUE)
-  system(delcmd)
+
   colnames(PDSI) <- c("YEAR", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL",
                       "AUG", "SEP", "OCT", "NOV", "DEC")
   colnames(scPDSI) <- c("YEAR", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL",
