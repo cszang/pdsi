@@ -15,4 +15,3 @@ install_github("pdsi", "znag")
 
 ** Todo
    - Add support for Linux
-   - Reliably remove temporary directories on Windows machines.
