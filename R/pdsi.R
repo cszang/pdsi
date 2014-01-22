@@ -86,13 +86,9 @@ pdsi <- function(awc, lat, climate, start, end) {
     exec_path <- file.path(system.file(package = "pdsi"), "exec", "pdsi")
   }
 
-  oldwd <- getwd()
-  setwd(tdir)
-  
-  cmd <- paste(exec_path, "-m -i", shQuote(tdir), start, end)
+  cmd <- paste(exec_path, "-m -i", shQuote(tdir),
+               "-o", shQuote(odir), start, end)
   system(cmd)
-
-  setwd(oldwd)
 
   ## read (sc)PDSI in again and return it
   scpdsi_path <- file.path(tdir, "monthly", "self_cal", "PDSI.tbl")
