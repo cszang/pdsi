@@ -41,9 +41,15 @@ pdsi <- function(awc, lat, climate, start, end) {
   ## check the system we are on
   the_system <- Sys.info()["sysname"]
 
+  if (the_system == "Linux") {
+    stop("Package `pdsi` is currently not supported under Linux.")
+  }
+
   ## create temp dir
   tdir <- tempfile("pdsi_tmp_")
+  odir <- file.path(tdir, "output")
   dir.create(tdir)
+  dir.create(odir)
 
   require(bootRes)
 
