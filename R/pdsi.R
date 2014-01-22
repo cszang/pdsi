@@ -35,6 +35,7 @@
 ##' data(muc.clim)
 ##' pdsi(12, 50, muc.clim, 1960, 2000)
 ##' @importFrom bootRes pmat
+##' @import digest
 ##' @export
 pdsi <- function(awc, lat, climate, start, end) {
 
@@ -46,10 +47,8 @@ pdsi <- function(awc, lat, climate, start, end) {
   }
 
   ## create temp dir
-  tdir <- tempfile("pdsi_tmp_")
-  odir <- file.path(tdir, "output")
+  tdir <- paste(getwd(), "/", digest(Sys.time()), sep = "")
   dir.create(tdir)
-  dir.create(odir)
 
   require(bootRes)
 
@@ -92,13 +91,17 @@ pdsi <- function(awc, lat, climate, start, end) {
     exec_path <- file.path(system.file(package = "pdsi"), "exec", "pdsi")
   }
 
-  cmd <- paste(exec_path, "-m -i", shQuote(tdir),
-               "-o", shQuote(odir), start, end)
+  oldwd <- getwd()
+  setwd(tdir)
+
+  cmd <- paste(exec_path, " -m -i", shQuote(tdir), start, end)
   system(cmd)
 
+  setwd(oldwd)
+
   ## read (sc)PDSI in again and return it
-  scpdsi_path <- file.path(odir, "monthly", "self_cal", "PDSI.tbl")
-  pdsi_path <- file.path(odir, "monthly", "original", "PDSI.tbl")
+  scpdsi_path <- file.path(tdir, "monthly", "self_cal", "PDSI.tbl")
+  pdsi_path <- file.path(tdir, "monthly", "original", "PDSI.tbl")
   scPDSI <- read.table(scpdsi_path)
   PDSI <- read.table(pdsi_path)
   unlink(tdir, recursive = TRUE)
