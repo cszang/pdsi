@@ -42,7 +42,7 @@ pdsi <- function(awc, lat, climate, start, end) {
   the_system <- Sys.info()["sysname"]
 
   ## create temp dir
-  tdir <- tempdir()
+  tdir <- tempfile("pdsi_tmp_")
   dir.create(tdir)
 
   require(bootRes)
