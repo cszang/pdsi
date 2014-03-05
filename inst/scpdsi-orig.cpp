@@ -3,6 +3,7 @@
 #include <cstring>
 #include <stdio.h>
 #include <ctype.h>
+#include <direct.h>  // unccoment for windows machines.
 
 
 //=============================================================================
@@ -568,19 +569,19 @@ int main(int argc,char *argv[]) {
   pdsi PDSI;
   PDSI.set_flags(argc,argv); // Sets the flags of PDSI 
   PDSI.WeeklyPDSI();         // Calculates the weekly pdsi values for PDSI
-  PDSI.Write((char *)"weekly/1");
+  PDSI.Write("weekly/1");
   PDSI.WeeklyPDSI(2);
-  PDSI.Write((char *)"weekly/2");
+  PDSI.Write("weekly/2");
   PDSI.WeeklyPDSI(4);
-  PDSI.Write((char *)"weekly/4");
+  PDSI.Write("weekly/4");
   PDSI.WeeklyPDSI(13);
-  PDSI.Write((char *)"weekly/13");
+  PDSI.Write("weekly/13");
   PDSI.MonthlyPDSI();
-  PDSI.Write((char *)"monthly/original");
+  PDSI.Write("monthly/original");
   PDSI.SCMonthlyPDSI();
-  PDSI.Write((char *)"monthly/self_cal");
+  PDSI.Write("monthly/self_cal");
   PDSI.WeeklyCMI();
-  PDSI.Write((char *)"weekly/CMI");
+  PDSI.Write("weekly/CMI");
   return 0;
 }
 //-----------------------------------------------------------------------------
@@ -3425,7 +3426,7 @@ void pdsi::Write() {
       return;
     }
     else{
-      Write((char *)"weekly/CMI/");
+      Write("weekly/CMI/");
     }
   }
   if(Weekly){
@@ -3433,9 +3434,9 @@ void pdsi::Write() {
     Write(full_path);
   }
   else if(Monthly)
-    Write((char *)"monthly/original");
+    Write("monthly/original");
   else if(SCMonthly)
-    Write((char *)"monthly/self_cal");
+    Write("monthly/self_cal");
   
 }
 //-----------------------------------------------------------------------------
@@ -3785,13 +3786,13 @@ void pdsi::MoveCMIFiles(char* dir) {
   sprintf(filename,"%s%s",dir,"CMI_calc.tbl");
   remove(filename);
   if(rename("CMI_calc.tbl",filename) == -1){
-    if(ReprintFile((char *)"CMI_calc.tbl",(char *)filename) == -1 && verbose > 0)
+    if(ReprintFile("CMI_calc.tbl",filename) == -1 && verbose > 0)
       printf("unable to rename CMI_calc.tbl as \"%s\".\n",filename);
   }
   sprintf(filename,"%s%s",dir,"potentials");
   remove(filename);
   if(rename("potentials",filename) == -1){
-    if(ReprintFile((char *)"potentials",(char *)filename) == -1 && verbose > 0)
+    if(ReprintFile("potentials",filename) == -1 && verbose > 0)
       printf("Unable to rename potentials file as \"%s\".\n",filename);
   }
   sprintf(filename,"%s%s",dir,"dvalue");
@@ -3801,7 +3802,7 @@ void pdsi::MoveCMIFiles(char* dir) {
   sprintf(filename,"%s%s",dir,"WB.tbl");
   remove(filename);
   if(rename("WB.tbl",filename) == -1 ) { 
-    if(ReprintFile((char *)"WB.tbl",(char *)filename) == -1 && verbose > 0) 
+    if(ReprintFile("WB.tbl",filename) == -1 && verbose > 0) 
       printf("Unable to rename WB.tbl file as \"%s\".\n",filename); 
   } 
 }
@@ -3824,12 +3825,12 @@ void pdsi::MoveFiles(char* dir) {
     //move potentials and dvalue
     sprintf(filename,"%s%s",dir,"potentials");
     if(rename("potentials",filename) == -1){
-      if(ReprintFile((char *)"potentials",(char *)filename) == -1 && verbose > 0)
+      if(ReprintFile("potentials",filename) == -1 && verbose > 0)
 		printf("Unable to rename potentials file as \"%s\".\n",filename);
     }
     sprintf(filename,"%s%s",dir,"dvalue"); 
     if(rename("dvalue",filename) == -1) { 
-      if(ReprintFile((char *)"dvalue",(char *)filename) == -1 && verbose > 0) 
+      if(ReprintFile("dvalue",filename) == -1 && verbose > 0) 
 		printf("Unable to rename dvalue file as \"%s\".\n",filename); 
     } 
   }
@@ -3837,7 +3838,7 @@ void pdsi::MoveFiles(char* dir) {
     //move bigTable.tbl
     sprintf(filename,"%s%s",dir,"bigTable.tbl"); 
     if(rename("bigTable.tbl",filename) == -1){ 
-      if(ReprintFile((char *)"bigTable.tbl",(char *)filename) == -1 && verbose > 0) 
+      if(ReprintFile("bigTable.tbl",filename) == -1 && verbose > 0) 
         printf("Unable to rename bigTable.tbl file as \"%s\".\n",filename); 
     } 
   }  
@@ -3845,7 +3846,7 @@ void pdsi::MoveFiles(char* dir) {
     //move WB.tbl
     sprintf(filename,"%s%s",dir,"WB.tbl"); 
     if(rename("WB.tbl",filename) == -1 ) { 
-      if(ReprintFile((char *)"WB.tbl",(char *)filename) == -1 && verbose > 0) 
+      if(ReprintFile("WB.tbl",filename) == -1 && verbose > 0) 
         printf("Unable to rename WB.tbl file as \"%s\".\n",filename); 
     } 
   }
@@ -5108,6 +5109,7 @@ int dir_exists(char *dir) {
 //Returns 1 if the directory already exists.
 //-----------------------------------------------------------------------------
 int create_dir(char *path) {
+  /*  
   //---------------------------------------------------------------------------
   //unix version
   //---------------------------------------------------------------------------
@@ -5141,10 +5143,10 @@ int create_dir(char *path) {
     i++;
   }  
   return return_value;
+  */
   //---------------------------------------------------------------------------
   //Windows Version
   //---------------------------------------------------------------------------
-  /*
   unsigned int i = 0;
   char my_path[128];
   char dir[128];
@@ -5172,7 +5174,6 @@ int create_dir(char *path) {
   }
 
   return return_value;
-  */
   //---------------------------------------------------------------------------
 }
 
