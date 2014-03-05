@@ -1,3 +1,4 @@
+export(build_linux_binary)
 export(pdsi)
 import(digest)
 importFrom(bootRes,pmat)

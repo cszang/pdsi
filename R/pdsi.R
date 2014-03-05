@@ -1,56 +1,47 @@
-## TODO how to remove tempdirs on Windows?
-## TODO add Linux support
-
-##' Calculates monthly scPDSI series from temperature and
-##' precipitation data. Uses binaries compiled from official
-##' University of Nebraska C++ Code.
-##'
-##' This function transforms the input climate data into the necessary
-##' files for the PDSI binary executable and saves them to a temp
-##' directory. The binary is called and the resulting files of
-##' interest for PDSI and scPDSI are read in again and returned.
-##' 
-##' For details on the algorithm, see the comments in the C++ source
-##' file. For reference, the source code is put in the toplevel
-##' installation directory of the package, you may find it using
-##' \code{system.file(package = "pdsi")}.
-##'
-##' Note: this package works only with Windows and Mac OS X so far.
-##' @title Calculation of (sc)PDSI
-##' @param awc Available soil water capacity (in cm)
-##' @param lat Latitude of the site (in decimal degrees)
-##' @param climate {\code{data.frame} with monthly climate data
-##' consisting of 4 columns for year, month, temperature (deg C), and
-##' precipitation (mm)
-##' @param start Start year for PDSI calculation
-##' @param end End year for PDSI calculation
-##' @return A \code{list} of two \code{data.frames}, one holding the
-##' standard PDSI, one holding the scPDSI.
-##' @references Methodology based on Research Paper No. 45;
-##' Meteorological Drought; by Wayne C. Palmer for the U.S. Weather
-##' Bureau, February 1965.
-##' @keywords utils
-##' @examples
-##' library(bootRes)
-##' data(muc.clim)
-##' pdsi(12, 50, muc.clim, 1960, 2000)
-##' @importFrom bootRes pmat
-##' @import digest
-##' @export
+#' Calculation of (sc)PDSI
+#' 
+#' Calculates monthly scPDSI series from temperature and precipitation data. 
+#' Uses binaries compiled from official University of Nebraska C++ Code.
+#' @details This function transforms the input climate data into the necessary 
+#'   files for the PDSI binary executable and saves them to a temp directory. 
+#'   The binary is called and the resulting files of interest for PDSI and 
+#'   scPDSI are read in again and returned.
+#'   
+#'   For details on the algorithm, see the comments in the C++ source file. For 
+#'   reference, the original source code (scpdsi-orig.cpp) is put in the 
+#'   toplevel installation directory of the package, you may find it using 
+#'   \code{system.file(package = "pdsi")}. For building the Linux binaries, a
+#'   modified version of the original source code (scpdsi.cpp, string constants
+#'   cast to \code{(char *)} for compatibility with modern g++, Windows-specific
+#'   code commented out) is also distributed with the package in the same
+#'   directory. To build the binary on Linux, use
+#'   \code{pdsi::build_linux_binary()}. 
+#' @param awc Available soil water capacity (in cm)
+#' @param lat Latitude of the site (in decimal degrees)
+#' @param climate \code{data.frame} with monthly climate data consisting of 4 
+#'   columns for year, month, temperature (deg C), and precipitation (mm)
+#' @param start Start year for PDSI calculation
+#' @param end End year for PDSI calculation
+#' @return A \code{list} of two \code{data.frames}, one holding the standard 
+#'   PDSI, one holding the scPDSI.
+#' @references Methodology based on Research Paper No. 45; Meteorological 
+#'   Drought; by Wayne C. Palmer for the U.S. Weather Bureau, February 1965.
+#' @keywords utils
+#' @examples
+#' library(bootRes)
+#' data(muc.clim)
+#' pdsi(12, 50, muc.clim, 1960, 2000)
+#' @importFrom bootRes pmat
+#' @import digest
+#' @export
 pdsi <- function(awc, lat, climate, start, end) {
 
   ## check the system we are on
   the_system <- Sys.info()["sysname"]
 
-  if (the_system == "Linux") {
-    stop("Package `pdsi` is currently not supported under Linux.")
-  }
-
   ## create temp dir
   tdir <- paste(getwd(), "/", digest(Sys.time()), sep = "")
   dir.create(tdir)
-
-  require(bootRes)
 
   ## truncate and reformat climate data
   climate_start <- which(climate[,1] == start-1)[1]
@@ -88,7 +79,17 @@ pdsi <- function(awc, lat, climate, start, end) {
   if (the_system == "Windows") {
     exec_path <- file.path(system.file(package = "pdsi"), "exec", "sc-pdsi.exe")
   } else {
-    exec_path <- file.path(system.file(package = "pdsi"), "exec", "pdsi")
+    if (the_system == "Linux") {
+      exec_path <- file.path(system.file(package = "pdsi"), "scpdsi.o")
+      if (!file.exists(exec_path))
+        stop("You need to build the binary first. On a Linux machine with recent g++ installed, call function `pdsi::build_linux_binary()`.")
+    } else {
+      if (the_system == "Mac") {
+        exec_path <- file.path(system.file(package = "pdsi"), "exec", "pdsi")
+      } else {
+        stop("Unsupported OS.")
+      }
+    }
   }
 
   oldwd <- getwd()

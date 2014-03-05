@@ -9,7 +9,7 @@ pdsi(awc, lat, climate, start, end)
 
   \item{lat}{Latitude of the site (in decimal degrees)}
 
-  \item{climate}{{\code{data.frame} with monthly climate
+  \item{climate}{\code{data.frame} with monthly climate
   data consisting of 4 columns for year, month, temperature
   (deg C), and precipitation (mm)}
 
@@ -29,17 +29,21 @@ University of Nebraska C++ Code.
 \details{
 This function transforms the input climate data into the
 necessary files for the PDSI binary executable and saves
-them to a temp directory. The binary is called and the
+them to a temp directory.  The binary is called and the
 resulting files of interest for PDSI and scPDSI are read in
 again and returned.
 
 For details on the algorithm, see the comments in the C++
-source file. For reference, the source code is put in the
-toplevel installation directory of the package, you may
-find it using \code{system.file(package = "pdsi")}.
-
-Note: this package works only with Windows and Mac OS X so
-far.
+source file. For reference, the original source code
+(scpdsi-orig.cpp) is put in the toplevel installation
+directory of the package, you may find it using
+\code{system.file(package = "pdsi")}. For building the
+Linux binaries, a modified version of the original source
+code (scpdsi.cpp, string constants cast to \code{(char *)}
+for compatibility with modern g++, Windows-specific code
+commented out) is also distributed with the package in the
+same directory. To build the binary on Linux, use
+\code{pdsi::build_linux_binary()}.
 }
 \examples{
 library(bootRes)
