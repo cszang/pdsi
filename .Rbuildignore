@@ -1,1 +1,3 @@
 README.org
+^.*\.Rproj$
+^\.Rproj\.user$
