@@ -1,7 +1,7 @@
 Package: pdsi
 Type: Package
 Title: scPDSI Calculation
-Version: 0.3
+Version: 0.4
 Date: 2013-10-21
 Author: Christian Zang
 Maintainer: Christian Zang <christian.zang@wzw.tum.de>

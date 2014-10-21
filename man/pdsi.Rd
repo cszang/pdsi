@@ -3,7 +3,7 @@
 \alias{pdsi}
 \title{Calculation of (sc)PDSI}
 \usage{
-pdsi(awc, lat, climate, start, end)
+pdsi(awc, lat, climate, start, end, mode = "both")
 }
 \arguments{
 \item{awc}{Available soil water capacity (in cm)}
@@ -16,10 +16,13 @@ columns for year, month, temperature (deg C), and precipitation (mm)}
 \item{start}{Start year for PDSI calculation}
 
 \item{end}{End year for PDSI calculation}
+
+\item{mode}{one of c("both", "pdsi", "scpdsi")}
 }
 \value{
-A \code{list} of two \code{data.frames}, one holding the standard
-  PDSI, one holding the scPDSI.
+For mode "both", a \code{list} of two \code{data.frames},
+one holding the standard PDSI, one holding the scPDSI. For modes
+"pdsi" or "scpdsi" only the respective \code{data.frame}.
 }
 \description{
 Calculates monthly scPDSI series from temperature and precipitation data.

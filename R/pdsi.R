@@ -22,8 +22,10 @@
 #'   columns for year, month, temperature (deg C), and precipitation (mm)
 #' @param start Start year for PDSI calculation
 #' @param end End year for PDSI calculation
-#' @return A \code{list} of two \code{data.frames}, one holding the standard 
-#'   PDSI, one holding the scPDSI.
+#' @param mode one of c("both", "pdsi", "scpdsi")
+#' @return For mode "both", a \code{list} of two \code{data.frames},
+#' one holding the standard PDSI, one holding the scPDSI. For modes
+#' "pdsi" or "scpdsi" only the respective \code{data.frame}.
 #' @references Methodology based on Research Paper No. 45; Meteorological 
 #'   Drought; by Wayne C. Palmer for the U.S. Weather Bureau, February 1965.
 #' @keywords utils
@@ -34,7 +36,7 @@
 #' @importFrom bootRes pmat
 #' @import digest
 #' @export
-pdsi <- function(awc, lat, climate, start, end) {
+pdsi <- function(awc, lat, climate, start, end, mode = "both") {
 
   ## check the system we are on
   the_system <- Sys.info()["sysname"]
@@ -103,11 +105,31 @@ pdsi <- function(awc, lat, climate, start, end) {
   ## read (sc)PDSI in again and return it
   scpdsi_path <- file.path(tdir, "monthly", "self_cal", "PDSI.tbl")
   pdsi_path <- file.path(tdir, "monthly", "original", "PDSI.tbl")
-  scPDSI <- read.fwf(scpdsi_path, c(5, rep(7, 12)))
-  PDSI <- read.fwf(pdsi_path, c(5, rep(7, 12)))
+
+  if (any(c("scpdsi", "both") == mode)) {
+    scPDSI <- read.fwf(scpdsi_path, c(5, rep(7, 12)))
+    colnames(scPDSI) <- c("YEAR", toupper(month.abb))
+  }
+  
+  if (any(c("pdsi", "both") == mode)) {
+    PDSI <- read.fwf(pdsi_path, c(5, rep(7, 12)))
+    colnames(PDSI) <- c("YEAR", toupper(month.abb))
+  }
+
   unlink(tdir, recursive = TRUE)
 
-  colnames(PDSI) <- colnames(scPDSI) <- c("YEAR", toupper(month.abb))
-
-  list(PDSI, scPDSI)
+  if (mode == "both") {
+    list(PDSI, scPDSI)
+  } else {
+    if (mode == "pdsi") {
+      PDSI
+    } else {
+      if (mode == "scpdsi") {
+        scPDSI
+      } else {
+        stop("`mode` has to be one of 'pdsi', 'scpdsi', or 'both'.")
+      }
+    }
+  }
 }
+
