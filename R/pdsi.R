@@ -103,13 +103,11 @@ pdsi <- function(awc, lat, climate, start, end) {
   ## read (sc)PDSI in again and return it
   scpdsi_path <- file.path(tdir, "monthly", "self_cal", "PDSI.tbl")
   pdsi_path <- file.path(tdir, "monthly", "original", "PDSI.tbl")
-  scPDSI <- read.table(scpdsi_path)
-  PDSI <- read.table(pdsi_path)
+  scPDSI <- read.fwf(scpdsi_path, c(5, rep(7, 12)))
+  PDSI <- read.fwf(pdsi_path, c(5, rep(7, 12)))
   unlink(tdir, recursive = TRUE)
 
-  colnames(PDSI) <- c("YEAR", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL",
-                      "AUG", "SEP", "OCT", "NOV", "DEC")
-  colnames(scPDSI) <- c("YEAR", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL",
-                      "AUG", "SEP", "OCT", "NOV", "DEC")
+  colnames(PDSI) <- colnames(scPDSI) <- c("YEAR", toupper(month.abb))
+
   list(PDSI, scPDSI)
 }

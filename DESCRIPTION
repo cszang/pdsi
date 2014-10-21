@@ -1,8 +1,8 @@
 Package: pdsi
 Type: Package
 Title: scPDSI Calculation
-Version: 0.2
-Date: 2013-03-5
+Version: 0.3
+Date: 2013-10-21
 Author: Christian Zang
 Maintainer: Christian Zang <christian.zang@wzw.tum.de>
 Description: Calculation of monthly (sc)PDSI series
