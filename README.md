@@ -7,7 +7,7 @@ Calculation of (sc)PDSI from monthly temperature and precipition data in R. This
 ``` R
 install.packages("devtools")
 library(devtools)
-install_github("pdsi", "znag")
+install_github("cszang/pdsi")
 # (on Linux)
 library(pdsi)
 pdsi::build_linux_binaries()
