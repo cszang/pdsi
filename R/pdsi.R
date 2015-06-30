@@ -86,7 +86,7 @@ pdsi <- function(awc, lat, climate, start, end, mode = "both") {
       if (!file.exists(exec_path))
         stop("You need to build the binary first. On a Linux machine with recent g++ installed, call function `pdsi::build_linux_binary()`.")
     } else {
-      if (the_system == "Mac") {
+      if (the_system == "Darwin") {
         exec_path <- file.path(system.file(package = "pdsi"), "exec", "pdsi")
       } else {
         stop("Unsupported OS.")
