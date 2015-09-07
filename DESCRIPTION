@@ -5,6 +5,7 @@ Version: 0.4
 Date: 2013-10-21
 Author: Christian Zang
 Maintainer: Christian Zang <christian.zang@wzw.tum.de>
+Depends: bootRes
 Description: Calculation of monthly (sc)PDSI series
 License: GPL-3
 LazyLoad: yes
