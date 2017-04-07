@@ -23,6 +23,7 @@
 #' @param start Start year for PDSI calculation
 #' @param end End year for PDSI calculation
 #' @param mode one of c("both", "pdsi", "scpdsi")
+#' @param verbose should stderr/stdout be shown?
 #' @return For mode "both", a \code{list} of two \code{data.frames},
 #' one holding the standard PDSI, one holding the scPDSI. For modes
 #' "pdsi" or "scpdsi" only the respective \code{data.frame}.
@@ -36,7 +37,8 @@
 #' @importFrom bootRes pmat
 #' @import digest
 #' @export
-pdsi <- function(awc, lat, climate, start, end, mode = "both") {
+pdsi <- function(awc, lat, climate, start, end, mode = "both",
+                verbose = TRUE) {
 
   ## check the system we are on
   the_system <- Sys.info()["sysname"]
@@ -98,7 +100,7 @@ pdsi <- function(awc, lat, climate, start, end, mode = "both") {
   setwd(tdir)
 
   cmd <- paste(exec_path, " -m -i", shQuote(tdir), start, end)
-  system(cmd)
+  system(cmd, ignore.stdout = !verbose, ignore.stderr = !verbose)
 
   setwd(oldwd)
 

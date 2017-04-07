@@ -1,11 +1,12 @@
 Package: pdsi
 Type: Package
 Title: scPDSI Calculation
-Version: 0.4
-Date: 2013-10-21
+Version: 0.5
+Date: 2017-04-07
 Author: Christian Zang
 Maintainer: Christian Zang <christian.zang@wzw.tum.de>
 Depends: bootRes
 Description: Calculation of monthly (sc)PDSI series
 License: GPL-3
 LazyLoad: yes
+RoxygenNote: 6.0.1
