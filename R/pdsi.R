@@ -16,7 +16,7 @@
 #'   code commented out) is also distributed with the package in the same
 #'   directory. To build the binary on Linux, use
 #'   \code{pdsi::build_linux_binary()}. 
-#' @param awc Available soil water capacity (in cm)
+#' @param awc Available soil water capacity (in mm)
 #' @param lat Latitude of the site (in decimal degrees)
 #' @param climate \code{data.frame} with monthly climate data consisting of 4 
 #'   columns for year, month, temperature (deg C), and precipitation (mm)
@@ -33,7 +33,7 @@
 #' @examples
 #' library(bootRes)
 #' data(muc.clim)
-#' pdsi(12, 50, muc.clim, 1960, 2000)
+#' pdsi(120, 50, muc.clim, 1960, 2000)
 #' @importFrom bootRes pmat
 #' @import digest
 #' @export

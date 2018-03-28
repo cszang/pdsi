@@ -7,7 +7,7 @@
 pdsi(awc, lat, climate, start, end, mode = "both", verbose = TRUE)
 }
 \arguments{
-\item{awc}{Available soil water capacity (in cm)}
+\item{awc}{Available soil water capacity (in mm)}
 
 \item{lat}{Latitude of the site (in decimal degrees)}
 
@@ -50,7 +50,7 @@ This function transforms the input climate data into the necessary
 \examples{
 library(bootRes)
 data(muc.clim)
-pdsi(12, 50, muc.clim, 1960, 2000)
+pdsi(120, 50, muc.clim, 1960, 2000)
 }
 \references{
 Methodology based on Research Paper No. 45; Meteorological 
